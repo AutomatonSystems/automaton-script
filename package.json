@@ -1,0 +1,11 @@
+{
+	"name": "automaton-script",
+	"version": "0.0.1",
+	"main": "index.js",
+	"type": "module",
+	"author": "Automaton Systems (automaton.systems)",
+	"description": "A generic script-to-javascript compiler with very basic syntax",
+	"scripts": {
+		"start": "node --experimental-modules index.js"
+	}
+}
