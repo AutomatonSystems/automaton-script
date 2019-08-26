@@ -1,0 +1,113 @@
+<!doctype html>
+<html>
+	<head>
+	</head>
+	<body>
+		<script type="module">
+
+			//import extracto from "./Args.js";
+			
+			//let uuid = 0;
+			let operands = ['+'];
+
+			function extractArgs(string, patterns){
+				let args = {};
+				
+				let parts = string.match(/[a-zA-Z0-9\.]*(\{[^\}]*\})?/g);
+				parts = parts.filter((match)=>match!="");
+
+				for(let index = 0; index < patterns.length; index++){
+					let argPattern = patterns[index];
+					let argParts = parts[index].split('{');
+					
+					let token = argParts[0];
+
+					if(argParts.length>1){
+						let obj = argParts[1].substring(0,argParts[1].length-1);
+						//todo replcae with regexp
+						let mods = obj.split(",");
+						//again probably
+						let keyValueMap = {}
+
+						mods.forEach((l)=>{
+							if(l.includes(":")){
+								let kv = l.split(":");
+								let key = kv[0].trim();
+								let value = kv[1].trim();
+								keyValueMap[key] = value;
+							}
+						});
+
+						let sourceVar = token;
+
+						if(mods.length>0){
+
+							//uuid
+							//let token = "_"+argPattern.name+ "Arg" + (uuid++);
+
+							let script = `{`;
+							// copy existing
+							for(let key of argPattern.attrs){
+								if(keyValueMap[key]){
+									let valueOverride = keyValueMap[key];
+									if(operands.includes(valueOverride.charAt(0))){
+										script += `${key}:${sourceVar}.${key}${valueOverride},`
+									}else{
+										script += `${key}:${valueOverride},`
+									}
+								}else{
+									script += `${key}:${sourceVar}.${key},`
+								}
+							}
+							// new parts
+							for(let key of Object.keys(keyValueMap)){
+								if(!argPattern.attrs.includes(key)){
+									script += `${key}:${keyValueMap[key]},`
+								}
+							}
+
+							if(script.length>1)
+								script = script.substring(0,script.length-1);
+							script +=`}`;
+
+							token = script;
+						}
+
+						
+					}
+
+					args[argPattern.name] = token;
+				}
+
+				return args;
+			}
+
+			let locationAttributes = ["id","x","y","z","radius"];
+
+
+			console.log(extractArgs("5", [
+				{"name": "value"}]));
+
+			console.log(extractArgs("entity.z", [
+				{"name": "value"}]));
+
+			console.log(extractArgs(`target{}`, [
+				{"name": "target", "attrs": locationAttributes}]));
+
+			console.log(extractArgs(`target{x: 5}`, [
+				{"name": "target", "attrs": locationAttributes}]));
+
+			console.log(extractArgs(`source{radius: 3, z: +2} target{x: 5}`, [
+				{"name": "source", "attrs": locationAttributes}, 
+				{"name": "target", "attrs": locationAttributes}]));
+
+			console.log(extractArgs(`source{x: 5} 6`, [
+				{"name": "value", "attrs": locationAttributes}]));
+			console.log(extractArgs(`source{x: 5} 6 {fz: +-10}`, [
+				{"name": "s", "attrs": locationAttributes},
+				{"name": "count"},
+				{"name": "t", "attrs": locationAttributes}]));
+
+		</script>
+	</body>
+</html>

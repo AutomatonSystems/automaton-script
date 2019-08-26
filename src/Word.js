@@ -1,8 +1,12 @@
+
+
 export default class Word{
 	constructor(name, block, argPattern, encode, preExecute){
 		this.name = name;
 
 		this._flowControl = block;
+
+		this._args = argPattern;
 
 		this._encode = encode;
 		this._preExecute = preExecute;

@@ -6,6 +6,7 @@ import Statement from './Statement.js';
 export default class Compiler{
 	constructor(dictionary){
 		this.dictionary = dictionary;
+		this.args = ['faction','source','target'];
 	}
 
 	compile(string){
@@ -21,6 +22,10 @@ export default class Compiler{
 		let blocks = [program];
 
 		for(let line of lines){
+
+			let i = line.indexOf('//');
+			if(i>=0)
+				line = line.substring(0,i);
 
 			if(line.trim() === "")
 				continue;
@@ -44,7 +49,7 @@ export default class Compiler{
 				depth = blocks[0].depth;
 			}
 
-			console.log(statement, statement.depth, depth);
+			//console.log(statement, statement.depth, depth);
 
 			// now at correct block level
 			blocks[0].add(statement);
@@ -65,7 +70,7 @@ export default class Compiler{
 
 		return `
 			${preBlock}
-			return async ()=>{
+			return async (${this.args.join(',')})=>{
 				${mainBlock}
 			}			
 		`;

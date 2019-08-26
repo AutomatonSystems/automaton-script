@@ -1,5 +1,7 @@
 let UUID = 0;
 
+import argsCompile from './Args.js';
+
 export default class Statement{
 	constructor(line, dictionary){
 
@@ -11,12 +13,12 @@ export default class Statement{
 
 		this.line = line;
 
-		line = line.substring(this.depth);
+		line = line.trim();
 
 		var i = line.indexOf(' ');
 		if(i>0){
 			this.command = dictionary.get(line.slice(0,i));
-			this.args = this.command.args( line.slice(i+1));
+			this.args = argsCompile(this.command.args( line.slice(i+1)), this.command._args);
 		}else{
 			this.command = dictionary.get(line);
 			this.args = null;

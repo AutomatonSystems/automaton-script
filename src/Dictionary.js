@@ -13,8 +13,13 @@ export default class Dictionary{
 	}
 
 	get(word){
-		let c = this.words[word];	
+		let c = this.words[word.trim()];	
 		if(c==null){
+			for(let i of Object.keys(this.words)){
+				console.log("#"+i+"#", i==word, word)
+
+			}
+			debugger;
 			console.error(`UNKNOWN WORD '${word}'`);
 		}
 		return c;
