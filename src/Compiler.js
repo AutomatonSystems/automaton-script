@@ -34,7 +34,7 @@ export default class Compiler{
 			let statement = new Statement(line, this.dictionary);
 		
 			if(statement.depth > depth){
-				console.log("DEEPER");
+				//console.log("DEEPER");
 				// go one block deeper
 				let block = new Block();
 				blocks.unshift(block);
@@ -44,7 +44,7 @@ export default class Compiler{
 
 			// pop up blocks
 			while(statement.depth < depth){
-				console.log("SHALLOWER");
+				//console.log("SHALLOWER");
 				blocks.shift();
 				depth = blocks[0].depth;
 			}
