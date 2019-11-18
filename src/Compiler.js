@@ -1,12 +1,18 @@
 
 import Word from './Word.js';
 import Block from './Block.js';
+import Dictionary from './Dictionary.js';
 import Statement from './Statement.js';
 
 export default class Compiler{
-	constructor(dictionary){
+	/**
+	 * 
+	 * @param {Dictionary} dictionary 
+	 * @param {String[]} defaultArgs 
+	 */
+	constructor(dictionary, defaultArgs){
 		this.dictionary = dictionary;
-		this.args = ['faction','source','target'];
+		this.args = defaultArgs;
 	}
 
 	compile(string){
@@ -21,9 +27,14 @@ export default class Compiler{
 
 		let blocks = [program];
 
+		let mainArgs = this.args;
+
 		for(let line of lines){
 
 			let i = line.indexOf('//');
+			if(i>=0)
+				line = line.substring(0,i);
+			i = line.indexOf('#');
 			if(i>=0)
 				line = line.substring(0,i);
 
@@ -68,9 +79,11 @@ export default class Compiler{
 
 		let mainBlock = program.mainBlock();
 
+
+		
 		return `
 			${preBlock}
-			return async (${this.args.join(',')})=>{
+			return (${this.args.join(',')})=>{
 				${mainBlock}
 			}			
 		`;

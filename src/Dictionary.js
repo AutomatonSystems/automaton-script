@@ -12,6 +12,11 @@ export default class Dictionary{
 		return this;
 	}
 
+	/**
+	 * 
+	 * @param {String} word 
+	 * @returns {Word}
+	 */
 	get(word){
 		let c = this.words[word.trim()];	
 		if(c==null){
@@ -25,7 +30,7 @@ export default class Dictionary{
 		return c;
 	}
 
-	buildCompiler(){
-		return new Compiler(this);
+	buildCompiler(defaultArgs=[]){
+		return new Compiler(this, defaultArgs);
 	}
 }

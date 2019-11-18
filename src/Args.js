@@ -23,6 +23,15 @@ export default function extractArgs(string, patterns){
 		if(argPattern.attrs==null)
 			argPattern.attrs=[];
 
+		if(parts[index]==null){
+			
+			if(argPattern.default)
+				args[argPattern.name] = argPattern.default;
+			else
+				args[argPattern.name] = null;
+			continue;
+		}
+
 		let argParts = parts[index].split('{');
 		
 		let token = argParts[0];

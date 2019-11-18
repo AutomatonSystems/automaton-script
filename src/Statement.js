@@ -1,8 +1,15 @@
 let UUID = 0;
 
+import Dictionary from './Dictionary.js';
+
 import argsCompile from './Args.js';
 
 export default class Statement{
+	/**
+	 * 
+	 * @param {String} line 
+	 * @param {Dictionary} dictionary 
+	 */
 	constructor(line, dictionary){
 
 		this.uuid = UUID++;
