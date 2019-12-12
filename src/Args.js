@@ -15,7 +15,7 @@ let operands = ['+'];
 export default function extractArgs(string, patterns){
 	let args = {};
 	
-	let parts = string.match(/[\=\!\(\)-_a-zA-Z0-9\.\*\/]*(\{[^\}]*\})?/g);
+	let parts = string.match(/[\&\|\%\=\!\(\)-_a-zA-Z0-9\.\*\/]*(\{[^\}]*\})?/g);
 	parts = parts.filter((match)=>match!="");
 
 	for(let index = 0; index < patterns.length; index++){
